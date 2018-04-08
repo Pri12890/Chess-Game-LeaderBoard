@@ -1,9 +1,9 @@
 package models;
 
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
+
 import java.sql.Blob;
 //import records.BankRecords;
 
@@ -16,7 +16,7 @@ public class DaoModel {
 	public DaoModel() { // create db object instance
 		conn = new DBConnect();
 	}
-	
+
 	public void createTable() {
 
 		try {
@@ -28,15 +28,15 @@ public class DaoModel {
 			System.out.println("Creating table in given database...");
 			stmt = conn.connect().createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS leaderboard_tab  " + 
-			"( userid INTEGER NOT NULL AUTO_INCREMENT , " + 
-					" password VARCHAR(10), "
-					+ " username VARCHAR(15), "
-					+ " decription VARCHAR(50), "
-					+ " score numeric(8,2), " 
-					+ " wins numeric(8,2), " 
-					+ " losses numeric(8,2), "
-					+ " image blob, " 
-					+ " PRIMARY KEY ( userid ))";
+				"( userid INTEGER NOT NULL AUTO_INCREMENT , " + 
+				" password VARCHAR(10), "
+				+ " username VARCHAR(15), "
+				+ " decription VARCHAR(50), "
+				+ " score numeric(8,2), " 
+				+ " wins numeric(8,2), " 
+				+ " losses numeric(8,2), "
+				+ " image blob, " 
+				+ " PRIMARY KEY ( userid ))";
 			stmt.executeUpdate(sql);
 			System.out.println("Created table in given database...");
 			conn.connect().close(); // close db connection
@@ -51,13 +51,13 @@ public class DaoModel {
 
 	// INSERT INTO METHOD
 
-/*	public void insertRecords(BankRecords[] robjs) { 
-	  try { 
-	  // Execute a query 
-	  System.out.println("Inserting records into the table..."); 
-	  stmt = conn.connect().createStatement(); 
-	  // Include all object data to the database table 
-	  for (int i = 0; i < robjs.length; ++i) { 
+	/*	public void insertRecords(BankRecords[] robjs) { 
+		try { 
+	// Execute a query 
+	System.out.println("Inserting records into the table..."); 
+	stmt = conn.connect().createStatement(); 
+	// Include all object data to the database table 
+	for (int i = 0; i < robjs.length; ++i) { 
 	// finish string assignment to insert all object data  
 	// (pid, id, income, pep) into your database table 
 	String sql = "INSERT INTO a_dama_tab(id,income, pep) " + 
@@ -66,22 +66,22 @@ public class DaoModel {
 	//System.out.println("Pep " + robjs[i].getPep());
 
 	stmt.executeUpdate(sql); 
-	    } 
-	           conn.connect().close(); 
-	   } catch (SQLException se) { 
-	 se.printStackTrace(); 
-	   } 
+	} 
+	conn.connect().close(); 
+	} catch (SQLException se) { 
+	se.printStackTrace(); 
+	} 
 
 	}*/
-	
-/*	public ResultSet retrieveRecords() throws SQLException { 
-		
-		 ResultSet rs = null; 
-		 stmt = conn.connect().createStatement(); 
-		 String sql =  "select pid, id,income, pep from a_dama_tab order by pep desc";
-		 
-		 rs = stmt.executeQuery(sql); 
-		 conn.connect().close(); 
-		 return rs; 
+
+	/*	public ResultSet retrieveRecords() throws SQLException { 
+
+		ResultSet rs = null; 
+		stmt = conn.connect().createStatement(); 
+		String sql =  "select pid, id,income, pep from a_dama_tab order by pep desc";
+
+		rs = stmt.executeQuery(sql); 
+		conn.connect().close(); 
+		return rs; 
 		} */
 }
