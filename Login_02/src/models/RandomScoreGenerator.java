@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class RandomScoreGenerator {
 // This class generates random Scores, Wins, Losses for the new accounts. 
+//
 	
 	Random random = new Random();
 

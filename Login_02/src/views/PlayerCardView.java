@@ -29,6 +29,15 @@ public class PlayerCardView extends Application {
 	@Override
 		public void start(Stage primaryStage) {
 			try {
+				
+				
+				// For Image 
+				// VBox vBox = new VBox(); vBox.setAlignment(Pos.CENTER);
+				// Add image view to the pane. vBox.getChildren().add(new ImageView("tiger.jpg"));
+				// Set the stage and show. Scene scene = new Scene(vBox); stage.setTitle("Image Demo"); stage.setScene(scene); stage.show();
+
+				
+				
 				BorderPane root = new BorderPane();
 				//Scene scene = new Scene(root,800,800);
 				GridPane grid = new GridPane();
@@ -49,6 +58,7 @@ public class PlayerCardView extends Application {
 				Text scenetitle = new Text("Welcome");
 				scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 				grid.add(scenetitle, 0, 0, 2, 1);
+				//grid.getChildren().add(new ImageView("tiger.jpg"));
 
 				Label userId = new Label("User Id:");
 				grid.add(userId, 0, 1);

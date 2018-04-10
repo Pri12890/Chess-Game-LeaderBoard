@@ -1,5 +1,7 @@
 package views;
 
+import java.sql.SQLException;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,8 +21,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.NewAccountModel;
+import models.UserProfile;
 
 public class CreateNewAccountView extends Application{
+	
+	NewAccountModel nAM;
+	
+	public CreateNewAccountView() {
+		this.nAM = new NewAccountModel();
+	}
+
+
 	public void start(Stage primaryStage) {
 		try {
 
@@ -29,6 +42,24 @@ public class CreateNewAccountView extends Application{
 			Scene scene = new Scene(grid,400,400);
 			Label userName = new Label("Create User Name:");
 			TextField userTextField = new TextField();
+			
+			TextField userTextField1 = new TextField();
+			grid.add(userTextField1, 1, 2);
+			//text field for password
+			Label pw = new Label("Create Password:");
+			grid.add(pw, 0, 2);
+			PasswordField pwBox = new PasswordField();
+			grid.add(pwBox, 1, 2);
+
+			Label description = new Label("Description:");
+			grid.add(description, 0, 3);
+
+			TextField userTextField2 = new TextField();
+			grid.add(userTextField2, 1, 3);
+
+
+			Label image = new Label("Image:");
+			grid.add(image, 0, 4);
 			Button btn = new Button("Create Account");
 
 
@@ -41,8 +72,23 @@ public class CreateNewAccountView extends Application{
 
 					@Override
 					public void handle(ActionEvent e) {
-					actiontarget.setFill(Color.FIREBRICK);
-					actiontarget.setText("New Account Created");
+					String userName = userTextField.getText();	
+					String userPwd = pwBox.getText();
+					String description = userTextField2.getText();
+					Image image = null; // check how to get image 
+					UserProfile userProfile = new UserProfile(userName, userPwd, description, image); 	
+					try {
+						CreateNewAccountView.this.nAM.insertRecords(userProfile);
+						actiontarget.setFill(Color.GREEN);
+						actiontarget.setText("New Account Created");
+					} catch (SQLException e1) {
+						actiontarget.setFill(Color.FIREBRICK);
+						actiontarget.setText("Failed Account Creation");
+						System.out.println("Error in account creation: "+ e1.getMessage());
+					}
+					
+					//Text control for displaying the message
+					grid.add(actiontarget, 1, 7);
 					}
 					});
 
@@ -67,17 +113,12 @@ public class CreateNewAccountView extends Application{
 
 			grid.add(userTextField, 1, 1);
 
-			//text field for password
-			Label pw = new Label("Create Password:");
-			grid.add(pw, 0, 2);
-			PasswordField pwBox = new PasswordField();
-			grid.add(pwBox, 1, 2);
 
 			//Add our sign in Button 
 			HBox hbBtn = new HBox(10);
 			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 			hbBtn.getChildren().add(btn);
-			grid.add(hbBtn, 1, 4);
+			grid.add(hbBtn, 1, 6);
 
 
 
@@ -86,8 +127,6 @@ public class CreateNewAccountView extends Application{
 			primaryStage.setTitle("Hello to Chess Login");
 			primaryStage.show();
 
-			//Text control for displaying the message
-			grid.add(actiontarget, 1, 6);
 
 
 

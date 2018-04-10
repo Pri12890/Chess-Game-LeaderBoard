@@ -31,7 +31,7 @@ public class DaoModel {
 				"( userid INTEGER NOT NULL AUTO_INCREMENT , " + 
 				" password VARCHAR(10), "
 				+ " username VARCHAR(15), "
-				+ " decription VARCHAR(50), "
+				+ " decription VARCHAR(100), "
 				+ " score numeric(8,2), " 
 				+ " wins numeric(8,2), " 
 				+ " losses numeric(8,2), "
