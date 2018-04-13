@@ -1,5 +1,7 @@
 package models;
 
+import java.io.InputStream;
+
 import javafx.scene.image.Image;
 
 public class UserProfile {
