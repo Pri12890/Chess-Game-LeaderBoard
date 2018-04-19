@@ -29,7 +29,7 @@ import javafx.scene.text.Text;
 public class LoginView extends Application {
 
 	LoginController controller ;
-	
+	PlayerCardView playerCardView = new PlayerCardView();
 	public void addController(LoginController controller) {
 		this.controller = controller;
 	}
@@ -44,7 +44,7 @@ public class LoginView extends Application {
 			Scene scene = new Scene(grid,400,400);
 			Label userName = new Label("User Name:");
 			TextField userTextField = new TextField();
-			Button btn = new Button("Sign in");
+			Button signInBtn = new Button("Sign in");
 			Button btn1 = new Button("Create New Account");
 
 			//text field for password
@@ -53,28 +53,50 @@ public class LoginView extends Application {
 			PasswordField pwBox = new PasswordField();
 			grid.add(pwBox, 1, 2);
 			final Text actiontarget = new Text();
+			try {
+			if( )
+			{
+			signInBtn.setOnAction(e -> playerCardView.start(primaryStage)
+			
+					
+					
+					);
+			}
+		} catch (SQLException e1) {
+			System.out.println("User Not Found");
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
+			
+			
 
 			//??????
 			//Code to Handle an Event
 			//make the button display the text message when the user presses it. 
-			btn.setOnAction(new EventHandler<ActionEvent>() {
 
-					@Override
-					public void handle(ActionEvent e) {
-					actiontarget.setFill(Color.FIREBRICK);
-					actiontarget.setText("Sign in button pressed");
-					try {
-						LoginView.this.controller.login(userTextField.getText(), pwBox.getText());
-					} catch (SQLException e1) {
-						System.out.println("User Not Found");
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					}
-					});
+			//			btn.setOnAction(new EventHandler<ActionEvent>() {
+//
+//					@Override
+//					public void handle(ActionEvent e) {
+//					actiontarget.setFill(Color.FIREBRICK);
+//					actiontarget.setText("Sign in button pressed");
+//					try {
+//						LoginView.this.controller.login(userTextField.getText(), pwBox.getText());
+//						P
+//					} catch (SQLException e1) {
+//						System.out.println("User Not Found");
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					}
+//					});
 
 			btn1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -116,7 +138,7 @@ public class LoginView extends Application {
 			//Add our sign in Button 
 			HBox hbBtn = new HBox(10);
 			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-			hbBtn.getChildren().add(btn);
+			hbBtn.getChildren().add(signInBtn);
 			grid.add(hbBtn, 1, 4);
 
 			//Add our Create New Account button Button 

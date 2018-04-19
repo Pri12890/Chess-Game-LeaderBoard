@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import views.PlayerCardView;
 import views.PlayerView;
 
 public class LoginModel {
@@ -21,6 +22,9 @@ public class LoginModel {
 			 Statement stmt = connect.createStatement();
 			String sql = "Select * from leaderboard_tab where username = \""+ userName + "\" and password = \"" + password +"\"";
 			ResultSet rs = stmt.executeQuery(sql);
+			
+
+			//new PlayerCardView.runView(rs); 
 			new PlayerView().runView(rs);
 			return rs; 
 		}finally {

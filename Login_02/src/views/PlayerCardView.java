@@ -1,6 +1,9 @@
 package views;
 
 
+import java.io.IOException;
+import java.sql.ResultSet;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +27,10 @@ import javafx.scene.text.Text;
 
 
 public class PlayerCardView extends Application {
+
+
+	
+
 
 
 	@Override
@@ -96,6 +103,8 @@ public class PlayerCardView extends Application {
 				Button btn1 = new Button("View Highest Score");
 				//final Text actiontarget1 = new Text();
 				//grid.add(actiontarget1, 0, 7);
+				Button btnUpdate = new Button("Update");
+				Button btnDelete = new Button("Delete");
 
 
 				//Add "View Your Score" Button 
@@ -109,6 +118,18 @@ public class PlayerCardView extends Application {
 				hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
 				hbBtn1.getChildren().add(btn1);
 				grid.add(hbBtn1, 1, 7);
+				
+				//Add "View Highest Score  Button 
+				HBox hbBtnUpdate = new HBox(10);
+				hbBtn1.setAlignment(Pos.BOTTOM_LEFT);
+				hbBtn1.getChildren().add(btnUpdate);
+				grid.add(hbBtnUpdate, 1, 8);
+				
+				//Add "View Highest Score  Button 
+				HBox hbBtnDelete = new HBox(10);
+				hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+				hbBtn1.getChildren().add(btnDelete);
+				grid.add(hbBtnDelete, 1, 9);
 
 				// Call Controller to call Your Stats View 		       
 				//		        btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -146,6 +167,10 @@ public class PlayerCardView extends Application {
 				e.printStackTrace();
 			}
 		}
+	
+	public void runView(ResultSet rs) throws IOException {
+		
+	}
 
 
 

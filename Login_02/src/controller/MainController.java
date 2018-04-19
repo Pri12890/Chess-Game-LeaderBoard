@@ -1,5 +1,6 @@
 package controller;
 
+
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import models.LoginModel;
@@ -21,7 +22,7 @@ public class MainController {
 	
 	final LoginView loginView = new LoginView();
 	final LoginModel loginModel = new LoginModel(); 
-	final	PlayerCardView playerCardView = new PlayerCardView();
+	final PlayerCardView playerCardView = new PlayerCardView();
 	final PlayerCardModel playerCardModel = new PlayerCardModel();
 	final PlayerCardController playerCardController = new PlayerCardController(playerCardModel, playerCardView);
 	final LoginController loginController = new LoginController(createNewAccountcontroller,
