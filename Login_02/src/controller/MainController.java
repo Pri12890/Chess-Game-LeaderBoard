@@ -16,20 +16,18 @@ public class MainController {
 	final 	CreateNewAccountView createNewAccountview = new CreateNewAccountView();
 	final	NewAccountModel model = new NewAccountModel();
 	
-	
-	
-	
 	final	CreateNewAccountController createNewAccountcontroller = new CreateNewAccountController(model, createNewAccountview);
 	createNewAccountview.addController(createNewAccountcontroller);
 	
-	LoginView loginView = new LoginView();
-	LoginModel loginModel = new LoginModel(); 
-	PlayerCardView playerCardView = new PlayerCardView();
-	PlayerCardModel playerCardModel = new PlayerCardModel();
-	PlayerCardController playerCardController = new PlayerCardController(playerCardModel, playerCardView); 
+	final LoginView loginView = new LoginView();
+	final LoginModel loginModel = new LoginModel(); 
+	final	PlayerCardView playerCardView = new PlayerCardView();
+	final PlayerCardModel playerCardModel = new PlayerCardModel();
+	final PlayerCardController playerCardController = new PlayerCardController(playerCardModel, playerCardView);
 	final LoginController loginController = new LoginController(createNewAccountcontroller,
-															   loginModel,
+															   loginModel, 
 															   playerCardController);
+															
 	loginView.addController(loginController);
 	
 	

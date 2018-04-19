@@ -17,6 +17,11 @@ public class PlayerCardController {
 		this.playerCardView = playerCardView;
 	}
 	
+	public PlayerCardController() {
+		this.playerCardModel = null;
+		this.playerCardView = null;
+	}
+
 	public void consumePlayerRecord(ResultSet rs) {
 		Platform.runLater(new Runnable() {
 		      @Override

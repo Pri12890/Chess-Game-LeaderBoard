@@ -29,7 +29,7 @@ public class LoginController  {
 	}
 	
 	public void login(String userName, String password) throws SQLException, IOException {
-		 this.loginModel.login(userName, password); 
+		 this.loginModel.login(userName, password);
 		//final ResultSet rs2 = rs;
 //		boolean hasResults = rs.next();
 //		if(hasResults) {

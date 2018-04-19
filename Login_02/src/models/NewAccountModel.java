@@ -11,7 +11,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import views.CreateNewAccountView;
 
 public class NewAccountModel {
-	CreateNewAccountView NAV = new CreateNewAccountView();
 	/** This class generates random score, wins, losses for new user */
 	final RandomScoreGenerator rs;
 
