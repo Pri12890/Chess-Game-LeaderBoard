@@ -1,5 +1,11 @@
 package views;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import controller.CreateNewAccountController;
+import controller.LoginController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +28,12 @@ import javafx.scene.text.Text;
 
 public class LoginView extends Application {
 
+	LoginController controller ;
+	
+	public void addController(LoginController controller) {
+		this.controller = controller;
+	}
+	
 
 	public void start(Stage primaryStage) {
 		try {
@@ -35,6 +47,11 @@ public class LoginView extends Application {
 			Button btn = new Button("Sign in");
 			Button btn1 = new Button("Create New Account");
 
+			//text field for password
+			Label pw = new Label("Password:");
+			grid.add(pw, 0, 2);
+			PasswordField pwBox = new PasswordField();
+			grid.add(pwBox, 1, 2);
 			final Text actiontarget = new Text();
 
 			//??????
@@ -46,6 +63,16 @@ public class LoginView extends Application {
 					public void handle(ActionEvent e) {
 					actiontarget.setFill(Color.FIREBRICK);
 					actiontarget.setText("Sign in button pressed");
+					try {
+						LoginView.this.controller.login(userTextField.getText(), pwBox.getText());
+					} catch (SQLException e1) {
+						System.out.println("User Not Found");
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					}
 					});
 
@@ -53,7 +80,14 @@ public class LoginView extends Application {
 
 					@Override
 					public void handle(ActionEvent e) {
-					actiontarget.setFill(Color.FIREBRICK);
+						try {
+							// From Login View, Control comes to LoginController from this handle
+							LoginView.this.controller.createAccountView();
+						} catch (FileNotFoundException | SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					//actiontarget.setFill(Color.FIREBRICK);
 					actiontarget.setText("Create New Account button pressed");
 					}
 					});
@@ -78,11 +112,6 @@ public class LoginView extends Application {
 
 			grid.add(userTextField, 1, 1);
 
-			//text field for password
-			Label pw = new Label("Password:");
-			grid.add(pw, 0, 2);
-			PasswordField pwBox = new PasswordField();
-			grid.add(pwBox, 1, 2);
 
 			//Add our sign in Button 
 			HBox hbBtn = new HBox(10);

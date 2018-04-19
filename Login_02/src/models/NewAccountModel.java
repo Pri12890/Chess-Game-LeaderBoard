@@ -21,7 +21,7 @@ public class NewAccountModel {
 
 	
 // Insert User's personal Details 
-	public void insertRecords(UserProfile userProfile) throws SQLException {
+	public void insertRecords(UserProfile userProfile) throws SQLException, FileNotFoundException {
 		Connection connect = null;
 		try {
 //			// Execute a query
@@ -36,7 +36,7 @@ public class NewAccountModel {
 			preparedStmt.setString(2, userProfile.getPwd());
 			preparedStmt.setString(3, userProfile.getDesc());
 			// TODO : PA - if setObject works for image
-			//preparedStmt.setObject(4, userProfile.getImage());
+			preparedStmt.setBinaryStream(4, (InputStream) new FileInputStream(userProfile.getFile()), (int)userProfile.getFile().length());
 
 			
 			preparedStmt.execute();

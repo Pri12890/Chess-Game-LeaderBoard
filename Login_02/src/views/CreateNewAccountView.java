@@ -3,9 +3,11 @@ package views;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import controller.CreateNewAccountController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,13 +35,12 @@ import models.NewAccountModel;
 import models.UserProfile;
 
 public class CreateNewAccountView extends Application{
-	public static File file;
-	NewAccountModel nAM;
-	public static FileInputStream fis;
-	public CreateNewAccountView() {
-		this.nAM = new NewAccountModel();
+	public  File file;
+	public	CreateNewAccountController createNewAccountController;
+	
+	public void addController(CreateNewAccountController controller) {
+		this.createNewAccountController = controller;
 	}
-
 
 	public void start(Stage primaryStage) {
 		try {
@@ -75,22 +76,17 @@ public class CreateNewAccountView extends Application{
 			hbProfiltBtn.getChildren().add(ProfileBtn);
 			grid.add(hbProfiltBtn, 1,4);
 			
-			fis = new FileInputStream(file);
+		//	
 			
 //		    FOR selecting IMAGE FILES using out browse button 
 			ProfileBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent e) {
-				String userName = userTextField.getText();	
-				String userPwd = pwBox.getText();
-				String description = userTextField2.getText();
-				Image image = null; // check how to get image 
-				//Maybe move outside of browse button
 				//object to aid us in the image view
 				ImageView imageView = new ImageView();
 				Image profileImage;
-				UserProfile userProfile = new UserProfile(userName, userPwd, description, image); 	
+				//UserProfile userProfile = new UserProfile(userName, userPwd, description, image); 	
 				BorderPane layout = new BorderPane();
 				
 				TextArea textArea = new TextArea();
@@ -99,7 +95,6 @@ public class CreateNewAccountView extends Application{
 				
 				fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif")); 
 				//get the file form the desktop
-				Desktop desktop = Desktop.getDesktop();
 				//set the font of the filepath
 				textArea.setFont(Font.font("SanSerif",12));
 				textArea.setPromptText("Path of Selected File or Files");
@@ -125,6 +120,7 @@ public class CreateNewAccountView extends Application{
 					BorderPane.setAlignment(imageView, Pos.TOP_LEFT);
 
 				}
+				
 				grid.add(imageView, 1, 5);
 				grid.add(textArea, 1, 4);
 
@@ -151,15 +147,15 @@ public class CreateNewAccountView extends Application{
 					String userName = userTextField.getText();	
 					String userPwd = pwBox.getText();
 					String description = userTextField2.getText();
-					Image image = null; // check how to get image 
-					UserProfile userProfile = new UserProfile(userName, userPwd, description, image); 	
+					
+					UserProfile userProfile = new UserProfile(userName, userPwd, description, file); 	
 					try {
-						CreateNewAccountView.this.nAM.insertRecords(userProfile);
+						CreateNewAccountView.this.createNewAccountController.createAccount(userProfile);
 						actiontarget.setFill(Color.GREEN);
 						actiontarget.setText("New Account Created");
-					} catch (SQLException e1) {
+					} catch (SQLException  | FileNotFoundException  | NullPointerException e1) {
 						actiontarget.setFill(Color.FIREBRICK);
-						actiontarget.setText("Failed Account Creation");
+						actiontarget.setText("Please enter all the fields");
 						System.out.println("Error in account creation: "+ e1.getMessage());
 					}
 					
@@ -213,8 +209,4 @@ public class CreateNewAccountView extends Application{
 
 	}
 
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 }
