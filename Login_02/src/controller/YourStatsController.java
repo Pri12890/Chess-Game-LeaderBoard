@@ -10,18 +10,22 @@ import views.YourStatsView;
 public class YourStatsController {
 
 	private YourStatsView yourStatsView;
-	public YourStatsController(YourStatsView yourStatsView) {
-		this.yourStatsView = yourStatsView; 
+
+	public YourStatsController() {
+
 	}
-	
-	
+
+	public void setStatsView(YourStatsView yourStatsView) {
+		this.yourStatsView = yourStatsView;
+	}
+
 	public void yourStatsView() throws SQLException, FileNotFoundException {
 		Platform.runLater(new Runnable() {
-		      @Override
-		      public void run() {
-		    	  YourStatsController.this.yourStatsView.start(new Stage());
-		      }
-		  });
-		
-		}
+			@Override
+			public void run() {
+				YourStatsController.this.yourStatsView.start(new Stage());
+			}
+		});
+
+	}
 }

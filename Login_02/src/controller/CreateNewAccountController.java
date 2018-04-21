@@ -9,38 +9,35 @@ import models.NewAccountModel;
 import models.UserProfile;
 import views.CreateNewAccountView;
 
-public class CreateNewAccountController{
+public class CreateNewAccountController {
 
-	
-	private final NewAccountModel newAccountModel;
 	private final CreateNewAccountView createNewAccountView;
-	
+	private final NewAccountModel newAccountModel;
+
 	public CreateNewAccountController(NewAccountModel newAccountModel, CreateNewAccountView createNewAccountView) {
 		this.newAccountModel = newAccountModel;
 		this.createNewAccountView = createNewAccountView;
 	}
-	
-	public NewAccountModel getNewAccountModel() {
-		return this.newAccountModel;
+
+	public void createAccount(final UserProfile userProfile) throws SQLException, FileNotFoundException {
+		this.newAccountModel.insertRecords(userProfile);
 	}
-	
+
+	public void createAccountView() throws SQLException, FileNotFoundException {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				CreateNewAccountController.this.createNewAccountView.start(new Stage());
+			}
+		});
+
+	}
+
 	public CreateNewAccountView getCreateNewAccountView() {
 		return this.createNewAccountView;
 	}
-	
-	public void createAccount(final UserProfile userProfile) throws SQLException, FileNotFoundException {
-			this.newAccountModel.insertRecords(userProfile);
+
+	public NewAccountModel getNewAccountModel() {
+		return this.newAccountModel;
 	}
-	
-	public void createAccountView() throws SQLException, FileNotFoundException {
-		Platform.runLater(new Runnable() {
-		      @Override
-		      public void run() {
-		    	  CreateNewAccountController.this.createNewAccountView.start(new Stage());
-		      }
-		  });
-		
-		}
 }
-	
-	
