@@ -9,6 +9,7 @@ import models.PlayerCardModel;
 import views.CreateNewAccountView;
 import views.LoginView;
 import views.PlayerCardView;
+import views.YourStatsView;
 
 public class MainController {
 	
@@ -22,17 +23,19 @@ public class MainController {
 	
 	final LoginView loginView = new LoginView();
 	final LoginModel loginModel = new LoginModel(); 
-	final PlayerCardView playerCardView = new PlayerCardView();
+	//final PlayerCardView playerCardView = new PlayerCardView();
 	final PlayerCardModel playerCardModel = new PlayerCardModel();
-	final PlayerCardController playerCardController = new PlayerCardController(playerCardModel, playerCardView);
+	final YourStatsView yourStatsView = new YourStatsView(null); 
+	final YourStatsController statsController = new YourStatsController(yourStatsView); 
+	final PlayerCardController playerCardController = new PlayerCardController(playerCardModel, statsController);
 	final LoginController loginController = new LoginController(createNewAccountcontroller,
-															   loginModel, 
-															   playerCardController);
+															   loginModel, playerCardController);
+													
 															
 	loginView.addController(loginController);
 	
 	
-    // This operation is permitted on the event thread only; currentThread = main
+    // Error - This operation is permitted on the event thread only; currentThread = main
    // create JavaFX runnable thread - to show view. 
 	Platform.startup(new Runnable() {
 	      @Override

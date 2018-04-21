@@ -4,8 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.StringUtils;
+
 import controller.CreateNewAccountController;
 import controller.LoginController;
+import controller.UserInfofromDb;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,7 +32,7 @@ import javafx.scene.text.Text;
 public class LoginView extends Application {
 
 	LoginController controller ;
-	PlayerCardView playerCardView = new PlayerCardView();
+	//PlayerCardView playerCardView = new PlayerCardView();
 	public void addController(LoginController controller) {
 		this.controller = controller;
 	}
@@ -45,7 +48,8 @@ public class LoginView extends Application {
 			Label userName = new Label("User Name:");
 			TextField userTextField = new TextField();
 			Button signInBtn = new Button("Sign in");
-			Button btn1 = new Button("Create New Account");
+			
+			Button createAccountbtn = new Button("Create New Account");
 
 			//text field for password
 			Label pw = new Label("Password:");
@@ -53,52 +57,42 @@ public class LoginView extends Application {
 			PasswordField pwBox = new PasswordField();
 			grid.add(pwBox, 1, 2);
 			final Text actiontarget = new Text();
-			try {
-			if( )
-			{
-			signInBtn.setOnAction(e -> playerCardView.start(primaryStage)
-			
-					
-					
-					);
-			}
-		} catch (SQLException e1) {
-			System.out.println("User Not Found");
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-			
-			
-			
 
-			//??????
+
+			
 			//Code to Handle an Event
 			//make the button display the text message when the user presses it. 
 
-			//			btn.setOnAction(new EventHandler<ActionEvent>() {
-//
-//					@Override
-//					public void handle(ActionEvent e) {
-//					actiontarget.setFill(Color.FIREBRICK);
-//					actiontarget.setText("Sign in button pressed");
-//					try {
-//						LoginView.this.controller.login(userTextField.getText(), pwBox.getText());
-//						P
-//					} catch (SQLException e1) {
-//						System.out.println("User Not Found");
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//					}
-//					});
+			signInBtn.setOnAction(new EventHandler<ActionEvent>() {
 
-			btn1.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+					actiontarget.setFill(Color.FIREBRICK);
+					actiontarget.setText("Sign in button pressed");
+					try {
+						// Move using sign in button to player card view 
+						
+						UserInfofromDb userInfofromDb = LoginView.this.controller.login(userTextField.getText(), pwBox.getText());
+					//signInBtn.setOnAction(e -> playerCardView.start(primaryStage)
+						if(StringUtils.isNullOrEmpty(userInfofromDb.dbUserName)) {
+							
+						}else {
+							//playerCardView.start(primaryStage);
+						LoginView.this.controller.openPlayerCardView(userInfofromDb);
+							
+						}
+					} catch (SQLException e1) {
+						System.out.println("User Not Found");
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					}
+					});
+
+			createAccountbtn.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent e) {
@@ -144,7 +138,7 @@ public class LoginView extends Application {
 			//Add our Create New Account button Button 
 			HBox hbBtn1 = new HBox(10);
 			hbBtn1.setAlignment(Pos.BOTTOM_LEFT);
-			hbBtn1.getChildren().add(btn1);
+			hbBtn1.getChildren().add(createAccountbtn);
 			grid.add(hbBtn1, 0, 4);
 
 			primaryStage.setScene(scene);

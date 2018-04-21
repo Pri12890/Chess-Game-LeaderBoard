@@ -1,5 +1,6 @@
 package views;
 
+import controller.UserInfofromDb;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,43 +21,52 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class YourStatsView extends Application {
+	
+	final UserInfofromDb userInfofromDb1; 
+	public YourStatsView(UserInfofromDb userInfofromDb) {
+		userInfofromDb1 = userInfofromDb; 
+	}
 	public void start(Stage primaryStage) {
 		try {
 
 			BorderPane root = new BorderPane();
 			GridPane grid = new GridPane();
+			
+			//Messages in the View
 			Text scenetitle = new Text("Welcome");
 			Scene scene = new Scene(grid,400,400);
+			primaryStage.setScene(scene);
+			//sets our title for our window
+			primaryStage.setTitle("Hello to Chess Login");
+			primaryStage.show();
+			
+			//Labels
 			Label userName = new Label("User Name:");
-			TextField userTextField = new TextField();
-			//text field name and entrance area for username
 			grid.add(userName, 0, 1);
-			grid.add(userTextField, 1, 1);
-
-			//text field for Score
 			Label score = new Label("User Score:");
 			grid.add(score, 0, 2);
-			PasswordField scoreBox = new PasswordField();
-			grid.add(scoreBox, 1, 2);
-
-			//test field for Wins
 			Label wins = new Label("Wins:");
 			grid.add(wins, 0, 3);
-			PasswordField winsBox = new PasswordField();
-			grid.add(winsBox, 1, 3);
-
-			//test field for Wins
 			Label losses = new Label("Losses:");
 			grid.add(losses, 0, 4);
-			PasswordField lossesBox = new PasswordField();
-			grid.add(lossesBox, 1, 4);
-
+			
+			//TextFields for your stats View
+			TextField userTextField = new TextField();
+			grid.add(userTextField, 1, 1);
+			TextField scoreTextField = new PasswordField();
+			grid.add(scoreTextField, 1, 2);
+			TextField winsTextField = new PasswordField();
+			grid.add(winsTextField, 1, 3);
+			TextField lossesTextField = new PasswordField();
+			grid.add(lossesTextField, 1, 4);
+			userTextField.setText(userInfofromDb1.dbUserName);
+			//scoreTextField.setText(Integer.toString.userInfofromDb1.dbWins);
+			//winsTextField.setText(userInfofromDb1.dbWins);
+			//lossesTextField.setText(userInfofromDb1.dbLosses);
+			
 			final Text actiontarget = new Text();
 
-			//??????
-			//Code to Handle an Event
-			//make the button display the text message when the user presses it. 
-
+			
 			//sets the position of our objects to center
 			grid.setAlignment(Pos.CENTER);
 			grid.setHgap(10);
@@ -69,25 +79,13 @@ public class YourStatsView extends Application {
 			//set our scene title it will appear in the center of our box
 			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			grid.add(scenetitle, 0, 0, 2, 1);
-
-
-
-
-
-			primaryStage.setScene(scene);
-			//sets our title for our window
-			primaryStage.setTitle("Hello to Chess Login");
-			primaryStage.show();
-
+			
 			//Text control for displaying the message
 			grid.add(actiontarget, 1, 6);
-
-
 
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-
 
 	}
 	public static void main(String[] args) {
