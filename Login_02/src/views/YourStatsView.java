@@ -61,7 +61,7 @@ public class YourStatsView extends Application {
 			TextField lossesTextField = new TextField();
 			grid.add(lossesTextField, 1, 4);
 			userTextField.setText(userInfofromDb1.dbUserName);
-			scoreTextField.setText(userInfofromDb1.dbWins.toString());
+			scoreTextField.setText(userInfofromDb1.dbScore.toString());
 			winsTextField.setText(userInfofromDb1.dbWins.toString());
 			lossesTextField.setText(userInfofromDb1.dbLosses.toString());
 

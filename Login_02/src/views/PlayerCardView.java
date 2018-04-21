@@ -122,23 +122,20 @@ public class PlayerCardView extends Application {
 				public void handle(ActionEvent e) {
 					actiontarget.setFill(Color.FIREBRICK);
 					actiontarget.setText("Sign in button pressed");
-
-					// Move using sign in button to player card view
-
-					// UserInfofromDb userInfofromDb =
-					// LoginView.this.controller.login(userTextField.getText(), pwBox.getText());
-
-					// playerCardView.start(primaryStage);
-					// LoginView.this.controller.createAccountView();
 					try {
 						PlayerCardView.this.pcc.yourStatsView();
-					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					} catch (FileNotFoundException | SQLException e1) {
 					}
+				}
+			});
+
+			btnHighestScore.setOnAction((event) -> {
+				try {
+					PlayerCardView.this.pcc.yourStatsView();
+				} catch (FileNotFoundException | SQLException e1) {
+
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			});
 		} catch (Exception e) {
