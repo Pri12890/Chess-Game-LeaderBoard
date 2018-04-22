@@ -1,32 +1,176 @@
 package views;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+
+import controller.UpdateProfileController;
+import controller.UserInfofromDb;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import models.UpdatedUserProfile;
 
+//Allows the user to update their profile
 public class UpdateProfileView extends Application {
-//stage window
-	Stage window;
+
+	File file;
 	Scene scene;
+
+	public UpdateProfileController updateProfileController;
+	UserInfofromDb userInfofromDb;
+	// stage window
+	Stage window;
+
+	public void addController(UpdateProfileController updateProfileController) {
+		this.updateProfileController = updateProfileController;
+	}
+
+	public void addUserToUpdate(UserInfofromDb userInfofromDb) {
+		this.userInfofromDb = userInfofromDb;
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		window = primaryStage;
-		Label label = new Label("Update Your Profile");
-		Button updateBtn = new Button("Click to Update");
-		
-		//layout our object in a vertical column
-		VBox layout1 = new VBox(10);
-		layout1.getChildren().addAll(label,updateBtn);
-		scene = new Scene(layout1, 300, 200);
-		
-		window.setScene(scene);
-		window.show();
-		
+		GridPane grid = new GridPane();
+
+		Scene scene = new Scene(grid, 600, 400);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+		primaryStage.setScene(scene);
+		grid.setAlignment(Pos.CENTER);
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(25, 25, 25, 25));
+		primaryStage.setScene(scene);
+		// sets our title for our window
+		primaryStage.setTitle("Hello to Chess Login");
+
+		Text scenetitle = new Text("Update Your Profile");
+		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+		grid.add(scenetitle, 0, 0, 2, 1);
+
+		// Grid Labels
+
+		Label description = new Label("Description:");
+		grid.add(description, 0, 3);
+		Label image = new Label("Image:");
+		grid.add(image, 0, 5);
+		Button ProfileBtn = new Button("Browse");
+		// Add our sign in Button
+		HBox hbProfiltBtn = new HBox(10);
+		hbProfiltBtn.setAlignment(Pos.BOTTOM_RIGHT);
+		hbProfiltBtn.getChildren().add(ProfileBtn);
+		grid.add(hbProfiltBtn, 1, 5);
+		// Grid TextFields
+
+		TextField descriptionTextField = new TextField();
+		TextField imageTextField = new TextField();
+
+		// adding TextFields
+
+		grid.add(descriptionTextField, 1, 3);
+		// grid.add(imageTextField, 1, 5);
+		final Text actiontarget = new Text();
+		// Add "View Highest Score Button
+		Button btnUpdate = new Button("Click to Update");
+		HBox hbBtnUpdate = new HBox(10);
+		hbBtnUpdate.setAlignment(Pos.BOTTOM_RIGHT);
+		hbBtnUpdate.getChildren().add(btnUpdate);
+		grid.add(hbBtnUpdate, 1, 9);
+		BorderPane layout = new BorderPane();
+
+		TextArea textArea = new TextArea();
+		FileChooser fileChooser;
+		fileChooser = new FileChooser();
+
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+		// get the file form the desktop
+		// set the font of the filepath
+		textArea.setFont(Font.font("SanSerif", 12));
+		textArea.setPromptText("Path of Selected File or Files");
+		textArea.setPrefSize(300, 50);
+		textArea.setEditable(false);
+
+		// FOR selecting IMAGE FILES using out browse button
+		ProfileBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				// object to aid us in the image view
+				// UserProfile userProfile = new UserProfile(userName, userPwd, description,
+				// image);
+				// Maybe move outside of browse button
+				// single file selection of images
+				ImageView imageView = new ImageView();
+				Image profileImage;
+				file = fileChooser.showOpenDialog(primaryStage);
+
+				if (file != null) {
+					// desktop.open(file);
+					textArea.setText(file.getAbsolutePath());
+					// path, prefWidth, prefHeight, preserveRatio, smooth
+					profileImage = new Image(file.toURI().toString(), 100, 150, true, true);
+
+					imageView = new ImageView(profileImage);
+					imageView.setFitWidth(100);
+					imageView.setFitHeight(150);
+					imageView.setPreserveRatio(true);
+					layout.setCenter(imageView);
+					BorderPane.setAlignment(imageView, Pos.TOP_LEFT);
+					grid.add(imageView, 1, 5);
+					grid.add(textArea, 1, 4);
+				}
+
+				// System.out.println("something");
+			}
+
+		});
+
+		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				try {
+					UpdatedUserProfile updatedUserProfile = new UpdatedUserProfile(descriptionTextField.getText(),
+							file);
+					UpdateProfileView.this.updateProfileController.updateRecord(userInfofromDb, updatedUserProfile);
+					actiontarget.setFill(Color.GREEN);
+					actiontarget.setText("Profile Updated");
+					grid.add(actiontarget, 1, 7);
+				} catch (SQLException e1) {
+					actiontarget.setFill(Color.FIREBRICK);
+					actiontarget.setText("Please enter all the fields");
+					grid.add(actiontarget, 1, 7);
+
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		primaryStage.show();
 	}
-//Allows the user to update their profile
-	
 }

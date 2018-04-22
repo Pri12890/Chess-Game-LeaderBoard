@@ -1,6 +1,7 @@
 package views;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import controller.PlayerCardController;
@@ -25,13 +26,15 @@ import javafx.stage.Stage;
 
 public class PlayerCardView extends Application {
 	PlayerCardController pcc;
+
 	final UserInfofromDb userInfofromDb1;
 
+	// PlayerCardView playerCardView = new PlayerCardView();
 	public PlayerCardView(UserInfofromDb userInfofromDb) {
 		userInfofromDb1 = userInfofromDb;
+
 	}
 
-	// PlayerCardView playerCardView = new PlayerCardView();
 	public void addController(PlayerCardController pcc) {
 		this.pcc = pcc;
 	}
@@ -131,15 +134,46 @@ public class PlayerCardView extends Application {
 
 			btnHighestScore.setOnAction((event) -> {
 				try {
-					PlayerCardView.this.pcc.yourStatsView();
+					PlayerCardView.this.pcc.viewHighestScore();
 				} catch (FileNotFoundException | SQLException e1) {
 
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+			});
+
+			btnUpdate.setOnAction((event) -> {
+				try {
+					PlayerCardView.this.pcc.updateProfile(userInfofromDb1);
+				} catch (FileNotFoundException | SQLException e1) {
+
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			});
+
+			btnDelete.setOnAction((event) -> {
+
+				try {
+					PlayerCardView.this.pcc.deleteProfile(userInfofromDb1);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }
