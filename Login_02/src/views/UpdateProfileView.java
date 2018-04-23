@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.StringUtils;
+
 import controller.UpdateProfileController;
 import controller.UserInfofromDb;
 import javafx.application.Application;
@@ -50,62 +52,54 @@ public class UpdateProfileView extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		GridPane grid = new GridPane();
+	public void start(Stage primaryStage) {
 
+		GridPane grid = new GridPane();
 		Scene scene = new Scene(grid, 600, 400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-
+		Text scenetitle = new Text("Update Your Profile");
+		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+		grid.add(scenetitle, 0, 0, 2, 1);
 		primaryStage.setScene(scene);
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(25, 25, 25, 25));
 		primaryStage.setScene(scene);
-		// sets our title for our window
 		primaryStage.setTitle("Hello to Chess Login");
 
-		Text scenetitle = new Text("Update Your Profile");
-		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		grid.add(scenetitle, 0, 0, 2, 1);
-
-		// Grid Labels
-
+		// Label and Text Field for Description
 		Label description = new Label("Description:");
 		grid.add(description, 0, 3);
+		TextField descriptionTextField = new TextField();
+		grid.add(descriptionTextField, 1, 3);
+
+		// Label for Image
 		Label image = new Label("Image:");
 		grid.add(image, 0, 5);
+
+		// Browse button for image selection
 		Button ProfileBtn = new Button("Browse");
-		// Add our sign in Button
 		HBox hbProfiltBtn = new HBox(10);
 		hbProfiltBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		hbProfiltBtn.getChildren().add(ProfileBtn);
 		grid.add(hbProfiltBtn, 1, 5);
-		// Grid TextFields
 
-		TextField descriptionTextField = new TextField();
-		TextField imageTextField = new TextField();
-
-		// adding TextFields
-
-		grid.add(descriptionTextField, 1, 3);
-		// grid.add(imageTextField, 1, 5);
-		final Text actiontarget = new Text();
-		// Add "View Highest Score Button
+		// Click to Update Button
 		Button btnUpdate = new Button("Click to Update");
 		HBox hbBtnUpdate = new HBox(10);
 		hbBtnUpdate.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtnUpdate.getChildren().add(btnUpdate);
 		grid.add(hbBtnUpdate, 1, 9);
-		BorderPane layout = new BorderPane();
 
+		BorderPane layout = new BorderPane();
+		final Text actiontarget = new Text();
 		TextArea textArea = new TextArea();
 		FileChooser fileChooser;
 		fileChooser = new FileChooser();
 
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		// get the file form the desktop
-		// set the font of the filepath
 		textArea.setFont(Font.font("SanSerif", 12));
 		textArea.setPromptText("Path of Selected File or Files");
 		textArea.setPrefSize(300, 50);
@@ -113,14 +107,9 @@ public class UpdateProfileView extends Application {
 
 		// FOR selecting IMAGE FILES using out browse button
 		ProfileBtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent e) {
 				// object to aid us in the image view
-				// UserProfile userProfile = new UserProfile(userName, userPwd, description,
-				// image);
-				// Maybe move outside of browse button
-				// single file selection of images
 				ImageView imageView = new ImageView();
 				Image profileImage;
 				file = fileChooser.showOpenDialog(primaryStage);
@@ -130,7 +119,6 @@ public class UpdateProfileView extends Application {
 					textArea.setText(file.getAbsolutePath());
 					// path, prefWidth, prefHeight, preserveRatio, smooth
 					profileImage = new Image(file.toURI().toString(), 100, 150, true, true);
-
 					imageView = new ImageView(profileImage);
 					imageView.setFitWidth(100);
 					imageView.setFitHeight(150);
@@ -140,35 +128,38 @@ public class UpdateProfileView extends Application {
 					grid.add(imageView, 1, 5);
 					grid.add(textArea, 1, 4);
 				}
-
-				// System.out.println("something");
 			}
-
 		});
 
+		// Update Button Handle
 		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent e) {
 				try {
 					UpdatedUserProfile updatedUserProfile = new UpdatedUserProfile(descriptionTextField.getText(),
 							file);
-					UpdateProfileView.this.updateProfileController.updateRecord(userInfofromDb, updatedUserProfile);
-					actiontarget.setFill(Color.GREEN);
-					actiontarget.setText("Profile Updated");
-					grid.add(actiontarget, 1, 7);
-				} catch (SQLException e1) {
-					actiontarget.setFill(Color.FIREBRICK);
-					actiontarget.setText("Please enter all the fields");
-					grid.add(actiontarget, 1, 7);
-
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					if (file == null && StringUtils.isNullOrEmpty(updatedUserProfile.getDesc())) {
+						throwError(grid, actiontarget);
+					} else {
+						UpdateProfileView.this.updateProfileController.updateRecord(userInfofromDb, updatedUserProfile);
+						actiontarget.setFill(Color.GREEN);
+						actiontarget.setText("Profile Updated");
+						grid.add(actiontarget, 1, 7);
+					}
+				} catch (SQLException | FileNotFoundException | IllegalArgumentException e1) {
+					throwError(grid, actiontarget);
 				}
 
+			}
+
+			private void throwError(GridPane grid, final Text actiontarget) {
+				actiontarget.setFill(Color.FIREBRICK);
+				actiontarget.setText("Please enter all the fields");
+				try {
+					grid.add(actiontarget, 1, 7);
+				} catch (IllegalArgumentException e) {
+
+				}
 			}
 		});
 		primaryStage.show();

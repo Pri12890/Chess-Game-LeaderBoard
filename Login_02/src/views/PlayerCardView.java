@@ -1,9 +1,5 @@
 package views;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
-
 import controller.PlayerCardController;
 import controller.UserInfofromDb;
 import javafx.application.Application;
@@ -15,10 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -29,10 +25,8 @@ public class PlayerCardView extends Application {
 
 	final UserInfofromDb userInfofromDb1;
 
-	// PlayerCardView playerCardView = new PlayerCardView();
 	public PlayerCardView(UserInfofromDb userInfofromDb) {
 		userInfofromDb1 = userInfofromDb;
-
 	}
 
 	public void addController(PlayerCardController pcc) {
@@ -66,29 +60,42 @@ public class PlayerCardView extends Application {
 			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 			grid.add(scenetitle, 0, 0, 2, 1);
 
-			// Grid Labels
+			// Grid Label and TextField for User Id
 			Label userId = new Label("User Id:");
 			grid.add(userId, 0, 1);
+			TextField userIdTextField = new TextField();
+			grid.add(userIdTextField, 1, 1);
+			userIdTextField.setText(Integer.toString(userInfofromDb1.dbUserId));
+
+			// Grid Label and TextField for UserName
 			Label userName = new Label("UserName:");
 			grid.add(userName, 0, 2);
+			TextField userNameTextField = new TextField();
+			grid.add(userNameTextField, 1, 2);
+			userNameTextField.setText(userInfofromDb1.dbUserName);
+
+			// Grid Label and TextField for User Description
 			Label description = new Label("Description:");
 			grid.add(description, 0, 3);
+			TextField descriptionTextField = new TextField();
+			grid.add(descriptionTextField, 1, 3);
+			descriptionTextField.setText(userInfofromDb1.dbDescription);
 			Label image = new Label("Image:");
 			grid.add(image, 0, 4);
-
-			// Grid TextFields
-			TextField userIdTextField = new TextField();
-			TextField userNameTextField = new TextField();
-			TextField descriptionTextField = new TextField();
-			TextField imageTextField = new TextField();
-			userIdTextField.setText(Integer.toString(userInfofromDb1.dbUserId));
-			userNameTextField.setText(userInfofromDb1.dbUserName);
-			descriptionTextField.setText(userInfofromDb1.dbDescription);
-			// adding TextFields
-			grid.add(userIdTextField, 1, 1);
-			grid.add(userNameTextField, 1, 2);
-			grid.add(descriptionTextField, 1, 3);
-			grid.add(imageTextField, 1, 4);
+			if (userInfofromDb1.image != null) {
+				ImageView imageView = new ImageView(userInfofromDb1.image);
+				imageView.setFitWidth(100);
+				imageView.setFitHeight(150);
+				imageView.setPreserveRatio(true);
+				BorderPane layout = new BorderPane();
+				layout.setCenter(imageView);
+				BorderPane.setAlignment(imageView, Pos.TOP_LEFT);
+				grid.add(layout, 1, 4);
+			} else {
+				// Grid Label and TextField for Image
+				TextField imageTextField = new TextField();
+				grid.add(imageTextField, 1, 4);
+			}
 
 			// Add "View Your Score" Button
 			Button btnYourStats = new Button("View Your Score");
@@ -118,61 +125,31 @@ public class PlayerCardView extends Application {
 			hbBtn1.getChildren().add(btnDelete);
 			grid.add(hbBtnDelete, 1, 9);
 
+			// Your_Stats button handle
 			btnYourStats.setOnAction(new EventHandler<ActionEvent>() {
-				final Text actiontarget = new Text();
 
 				@Override
 				public void handle(ActionEvent e) {
-					actiontarget.setFill(Color.FIREBRICK);
-					actiontarget.setText("Sign in button pressed");
-					try {
-						PlayerCardView.this.pcc.yourStatsView();
-					} catch (FileNotFoundException | SQLException e1) {
-					}
+					PlayerCardView.this.pcc.yourStatsView();
 				}
 			});
 
+			// Highest Score button handle
 			btnHighestScore.setOnAction((event) -> {
-				try {
-					PlayerCardView.this.pcc.viewHighestScore();
-				} catch (FileNotFoundException | SQLException e1) {
-
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				PlayerCardView.this.pcc.viewHighestScore();
 			});
 
+			// Update Button Handle
 			btnUpdate.setOnAction((event) -> {
-				try {
-					PlayerCardView.this.pcc.updateProfile(userInfofromDb1);
-				} catch (FileNotFoundException | SQLException e1) {
-
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				PlayerCardView.this.pcc.updateProfile(userInfofromDb1);
 			});
 
+			// Delete Button Handle
 			btnDelete.setOnAction((event) -> {
-
-				try {
-					PlayerCardView.this.pcc.deleteProfile(userInfofromDb1);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				PlayerCardView.this.pcc.deleteProfile(userInfofromDb1);
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Player Card view crashed! " + e.getMessage());
 		}
 	}
 

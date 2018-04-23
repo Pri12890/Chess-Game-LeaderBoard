@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 
 import models.LoginModel;
@@ -20,11 +18,13 @@ public class LoginController {
 
 	}
 
-	public void createAccountView() throws FileNotFoundException, SQLException {
+	public void createAccountView() {
+		this.createNewAccountController.addLoginController(this);
 		this.createNewAccountController.createAccountView();
+
 	}
 
-	public UserInfofromDb login(String userName, String password) throws SQLException, IOException {
+	public UserInfofromDb login(String userName, String password) throws SQLException {
 		return this.loginModel.login(userName, password);
 	}
 

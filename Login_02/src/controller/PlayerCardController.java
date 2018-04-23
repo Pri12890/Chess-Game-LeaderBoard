@@ -1,10 +1,5 @@
 package controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import models.PlayerCardModel;
 import views.PlayerCardView;
@@ -27,18 +22,14 @@ public class PlayerCardController {
 		this.leaderBoardController = leaderBoardController;
 		this.updateProfileController = updateProfileController;
 		this.deleteProfileController = deleteProfileController;
+		this.deleteProfileController.addPlayerController(this);
 	}
 
 	public void consumePlayerRecord() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				PlayerCardController.this.playerCardView.start(new Stage());
-			}
-		});
+		PlayerCardController.this.playerCardView.start(new Stage());
 	}
 
-	public void deleteProfile(UserInfofromDb userInfofromDb) throws SQLException, FileNotFoundException {
+	public void deleteProfile(UserInfofromDb userInfofromDb) {
 		this.deleteProfileController.setUserInfo(userInfofromDb);
 		this.deleteProfileController.alertView();
 	}
@@ -51,15 +42,15 @@ public class PlayerCardController {
 
 	}
 
-	public void updateProfile(UserInfofromDb userInfofromDb) throws FileNotFoundException, SQLException {
+	public void updateProfile(UserInfofromDb userInfofromDb) {
 		this.updateProfileController.createUpdateView(userInfofromDb);
 	}
 
-	public void viewHighestScore() throws SQLException, IOException {
+	public void viewHighestScore() {
 		this.leaderBoardController.viewHighestScores();
 	}
 
-	public void yourStatsView() throws FileNotFoundException, SQLException {
+	public void yourStatsView() {
 		this.statsController.yourStatsView();
 	}
 

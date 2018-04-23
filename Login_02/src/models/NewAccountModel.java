@@ -22,7 +22,7 @@ public class NewAccountModel {
 			// // Execute a query
 			System.out.println("Inserting records into the table...");
 			connect = DBConnect.connect();
-			String sql = "INSERT INTO leaderboard_tab(username, password, decription, image, score, wins, losses) "
+			String sql = "INSERT INTO leaderboard_tab1(username, password, decription, image, score, wins, losses) "
 					+ "VALUES (?,?,?,?,?,?,?)";
 
 			PreparedStatement preparedStmt = connect.prepareStatement(sql);
@@ -31,8 +31,8 @@ public class NewAccountModel {
 			preparedStmt.setString(2, userProfile.getPwd());
 			preparedStmt.setString(3, userProfile.getDesc());
 			// TODO : PA - if setObject works for image
-			preparedStmt.setBinaryStream(4, new FileInputStream(userProfile.getFile()),
-					(int) userProfile.getFile().length());
+			int length = (int) userProfile.getFile().length();
+			preparedStmt.setBinaryStream(4, new FileInputStream(userProfile.getFile()), length);
 			preparedStmt.setLong(5, userProfile.getScore());
 			preparedStmt.setLong(6, userProfile.getWins());
 			preparedStmt.setLong(7, userProfile.getLosses());

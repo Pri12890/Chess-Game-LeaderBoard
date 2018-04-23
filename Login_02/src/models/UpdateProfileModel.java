@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.StringUtils;
+
 import controller.UserInfofromDb;
 
 public class UpdateProfileModel {
@@ -15,24 +17,32 @@ public class UpdateProfileModel {
 		Connection connect = null;
 
 		try {
-			// Execute a query
-
-			System.out.println("Deleting records from the table...");
+			System.out.println("Updating records from the table...");
 			connect = DBConnect.connect();
-			// and
-			String sql = "update leaderboard_tab set  image = ? , decription = ?  where userid = ? ";
-			// + userInfofromDb.dbUserId;
-			PreparedStatement preparedStmt = connect.prepareStatement(sql);
-			preparedStmt.setBinaryStream(1, new FileInputStream(updatedUserProfile.getFile()),
-					(int) updatedUserProfile.getFile().length());
-			preparedStmt.setString(2, updatedUserProfile.getDesc());
-			preparedStmt.setInt(3, userInfofromDb.dbUserId);
-			preparedStmt.executeUpdate();
-			// Statement stmt = connect.createStatement();
-			// int rs = stmt.executeUpdate(sql);
+			if (!StringUtils.isNullOrEmpty(updatedUserProfile.getDesc()) && updatedUserProfile.getFile() != null) {
 
-		} catch (Exception e) {
-			System.out.println("kyu phati hai " + e.getStackTrace());
+				String sql = "update leaderboard_tab1 set  image = ? , decription = ?  where userid = ? ";
+				PreparedStatement preparedStmt = connect.prepareStatement(sql);
+				preparedStmt.setBinaryStream(1, new FileInputStream(updatedUserProfile.getFile()),
+						(int) updatedUserProfile.getFile().length());
+				preparedStmt.setString(2, updatedUserProfile.getDesc());
+				preparedStmt.setInt(3, userInfofromDb.dbUserId);
+				preparedStmt.executeUpdate();
+			} else if (StringUtils.isNullOrEmpty(updatedUserProfile.getDesc())) {
+				String sql = "update leaderboard_tab1 set  image = ?  where userid = ? ";
+				PreparedStatement preparedStmt = connect.prepareStatement(sql);
+				preparedStmt.setBinaryStream(1, new FileInputStream(updatedUserProfile.getFile()),
+						(int) updatedUserProfile.getFile().length());
+				preparedStmt.setInt(2, userInfofromDb.dbUserId);
+				preparedStmt.executeUpdate();
+			} else {
+				String sql = "update leaderboard_tab1 set decription = ?  where userid = ? ";
+				PreparedStatement preparedStmt = connect.prepareStatement(sql);
+				preparedStmt.setString(1, updatedUserProfile.getDesc());
+				preparedStmt.setInt(2, userInfofromDb.dbUserId);
+				preparedStmt.executeUpdate();
+			}
+
 		} finally {
 			if (connect != null) {
 				connect.close();

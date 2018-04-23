@@ -1,7 +1,7 @@
 package controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.stage.Stage;
@@ -19,8 +19,13 @@ public class LeaderBoardController {
 		this.leaderBoardView = leaderBoardView;
 	}
 
-	public void viewHighestScores() throws SQLException, IOException {
-		final List<UserPartialInfo> listSortedUsers = this.leaderBoardModel.listSortedUsers();
+	public void viewHighestScores() {
+		List<UserPartialInfo> listSortedUsers = Collections.emptyList();
+		try {
+			listSortedUsers = this.leaderBoardModel.listSortedUsers();
+		} catch (SQLException e) {
+			// ignore
+		}
 		this.leaderBoardView.setListSortedUsers(listSortedUsers);
 		this.leaderBoardView.start(new Stage());
 	}

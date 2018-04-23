@@ -1,7 +1,5 @@
 package views;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 
 import com.mysql.jdbc.StringUtils;
@@ -18,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -28,10 +25,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginView extends Application {
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 
 	LoginController controller;
 
@@ -43,116 +36,93 @@ public class LoginView extends Application {
 	public void start(Stage primaryStage) {
 		try {
 
-			BorderPane root = new BorderPane();
 			GridPane grid = new GridPane();
-			Text scenetitle = new Text("Welcome");
 			Scene scene = new Scene(grid, 400, 400);
+			primaryStage.setScene(scene);
+			primaryStage.setTitle("Hello to Chess Login");
+			primaryStage.show();
+			Text scenetitle = new Text("Welcome");
+			grid.setAlignment(Pos.CENTER);
+			grid.setHgap(10);
+			grid.setVgap(10);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			grid.setPadding(new Insets(25, 25, 25, 25));
+			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			grid.add(scenetitle, 0, 0, 2, 1);
+
+			// Label and TextField for UserName
 			Label userName = new Label("User Name:");
+			grid.add(userName, 0, 1);
 			TextField userTextField = new TextField();
-			Button signInBtn = new Button("Sign in");
+			grid.add(userTextField, 1, 1);
 
-			Button createAccountbtn = new Button("Create New Account");
-
-			// text field for password
+			// Label and Password Field for Password
 			Label pw = new Label("Password:");
 			grid.add(pw, 0, 2);
 			PasswordField pwBox = new PasswordField();
 			grid.add(pwBox, 1, 2);
-			final Text actiontarget = new Text();
 
-			// Code to Handle an Event
-			// make the button display the text message when the user presses it.
-
-			signInBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-					actiontarget.setFill(Color.FIREBRICK);
-					actiontarget.setText("Sign in button pressed");
-					try {
-						// Move using sign in button to player card view
-
-						UserInfofromDb userInfofromDb = LoginView.this.controller.login(userTextField.getText(),
-								pwBox.getText());
-						// signInBtn.setOnAction(e -> playerCardView.start(primaryStage)
-						if (StringUtils.isNullOrEmpty(userInfofromDb.dbUserName)) {
-							actiontarget.setFill(Color.FIREBRICK);
-							actiontarget.setText("User does not exist");
-							grid.add(actiontarget, 1, 6);
-
-						} else {
-							// playerCardView.start(primaryStage);
-							LoginView.this.controller.openPlayerCardView(userInfofromDb);
-
-						}
-					} catch (SQLException e1) {
-						System.out.println("User Not Found");
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			});
-
-			createAccountbtn.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-					try {
-						// From Login View, Control comes to LoginController from this handle
-						LoginView.this.controller.createAccountView();
-					} catch (FileNotFoundException | SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					// actiontarget.setFill(Color.FIREBRICK);
-					actiontarget.setText("Create New Account button pressed");
-				}
-			});
-
-			// sets the position of our objects to center
-			grid.setAlignment(Pos.CENTER);
-			grid.setHgap(10);
-			grid.setVgap(10);
-
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			grid.setPadding(new Insets(25, 25, 25, 25));
-
-			// Add Text, Labels, and Text Fields
-			// set our scene title it will appear in the center of our box
-			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-			grid.add(scenetitle, 0, 0, 2, 1);
-
-			// text field name and enterance area for username
-			grid.add(userName, 0, 1);
-
-			grid.add(userTextField, 1, 1);
-
-			// Add our sign in Button
+			// Sign In Button
+			Button signInBtn = new Button("Sign in");
 			HBox hbBtn = new HBox(10);
 			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 			hbBtn.getChildren().add(signInBtn);
 			grid.add(hbBtn, 1, 4);
 
-			// Add our Create New Account button Button
+			// Create New Account Button
+			Button createAccountbtn = new Button("Create New Account");
 			HBox hbBtn1 = new HBox(10);
 			hbBtn1.setAlignment(Pos.BOTTOM_LEFT);
 			hbBtn1.getChildren().add(createAccountbtn);
 			grid.add(hbBtn1, 0, 4);
 
-			primaryStage.setScene(scene);
-			// sets our title for our window
-			primaryStage.setTitle("Hello to Chess Login");
-			primaryStage.show();
+			final Text actiontarget = new Text();
 
-			// Text control for displaying the message
-			grid.add(actiontarget, 1, 6);
+			// Handle for SignInButton
+			signInBtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+					try {
+						String name = userTextField.getText();
+						String pwd = pwBox.getText();
+						if (StringUtils.isNullOrEmpty(name) || StringUtils.isNullOrEmpty(pwd)) {
+							System.out.println("Missing user details ");
+							throwError(grid, actiontarget, "Please enter id and password");
+						} else {
+							UserInfofromDb userInfofromDb = LoginView.this.controller.login(name, pwd);
+							LoginView.this.controller.openPlayerCardView(userInfofromDb);
+						}
+					} catch (SQLException | NullPointerException e1) {
+						throwError(grid, actiontarget, "User does not exist");
+					}
+				}
+
+			});
+
+			// Handle for Create Account Button
+			createAccountbtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+					try {
+						LoginView.this.controller.createAccountView();
+					} catch (NullPointerException e1) {
+						throwError(grid, actiontarget, "Restart plz..");
+					}
+				}
+			});
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Login view crashed " + e.getMessage());
 		}
 
+	}
+
+	private void throwError(GridPane grid, final Text actiontarget, String error) {
+		try {
+			actiontarget.setFill(Color.FIREBRICK);
+			actiontarget.setText(error);
+			grid.add(actiontarget, 1, 6);
+		} catch (IllegalArgumentException e) {
+		}
 	}
 }

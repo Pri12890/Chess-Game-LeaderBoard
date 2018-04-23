@@ -1,9 +1,7 @@
 package controller;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import models.DeleteProfileModel;
 import views.AlertView;
@@ -11,6 +9,7 @@ import views.AlertView;
 public class DeleteProfileController {
 	private final AlertView alertView;
 	private final DeleteProfileModel deleteProfileModel;
+	private PlayerCardController playerCardController;
 	private UserInfofromDb userInfofromDB;
 
 	public DeleteProfileController(DeleteProfileModel deleteProfileModel, AlertView alertView) {
@@ -19,23 +18,20 @@ public class DeleteProfileController {
 		this.alertView.addController(this);
 	}
 
-	public void alertView() throws SQLException, FileNotFoundException {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					DeleteProfileController.this.alertView.start(new Stage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public void addPlayerController(PlayerCardController playerCardController) {
+		this.playerCardController = playerCardController;
+	}
 
+	public void alertView() {
+		DeleteProfileController.this.alertView.start(new Stage());
 	}
 
 	public void deleteProfile() throws SQLException {
-		// TODO Auto-generated method stub
 		this.deleteProfileModel.deleteRecord(this.userInfofromDB);
+	}
+
+	public void playerView() {
+		this.playerCardController.consumePlayerRecord();
 	}
 
 	public void setUserInfo(UserInfofromDb userInfofromDb) {

@@ -7,7 +7,6 @@ public class UpdatedUserProfile {
 	final File file;
 
 	public UpdatedUserProfile(String desc, File file) {
-
 		this.desc = desc;
 		this.file = file;
 	}

@@ -3,7 +3,8 @@ package controller;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
-import javafx.application.Platform;
+import com.mysql.jdbc.StringUtils;
+
 import javafx.stage.Stage;
 import models.NewAccountModel;
 import models.UserProfile;
@@ -12,6 +13,7 @@ import views.CreateNewAccountView;
 public class CreateNewAccountController {
 
 	private final CreateNewAccountView createNewAccountView;
+	private LoginController loginController;
 	private final NewAccountModel newAccountModel;
 
 	public CreateNewAccountController(NewAccountModel newAccountModel, CreateNewAccountView createNewAccountView) {
@@ -19,18 +21,26 @@ public class CreateNewAccountController {
 		this.createNewAccountView = createNewAccountView;
 	}
 
+	public void addLoginController(LoginController loginController) {
+		this.loginController = loginController;
+
+	}
+
 	public void createAccount(final UserProfile userProfile) throws SQLException, FileNotFoundException {
 		this.newAccountModel.insertRecords(userProfile);
 	}
 
-	public void createAccountView() throws SQLException, FileNotFoundException {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				CreateNewAccountController.this.createNewAccountView.start(new Stage());
-			}
-		});
+	public void createAccountView() {
+		CreateNewAccountController.this.createNewAccountView.start(new Stage());
+	}
 
+	public boolean doesUserExist(UserProfile profile) {
+		try {
+			UserInfofromDb login = this.loginController.login(profile.getName(), profile.getPwd());
+			return login == null ? false : !StringUtils.isNullOrEmpty(login.dbUserName);
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
 	public CreateNewAccountView getCreateNewAccountView() {

@@ -13,13 +13,11 @@ public class DeleteProfileModel {
 
 		try {
 			// Execute a query
-
 			System.out.println("Deleting records from the table...");
 			connect = DBConnect.connect();
 			Statement stmt = connect.createStatement();
-			String sql = "Delete from leaderboard_tab where userid = " + userInfofromDb.dbUserId;
-			int rs = stmt.executeUpdate(sql);
-
+			String sql = "Delete from leaderboard_tab1 where userid = " + userInfofromDb.dbUserId;
+			stmt.executeUpdate(sql);
 		} finally {
 			if (connect != null) {
 				connect.close();

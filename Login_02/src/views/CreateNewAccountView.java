@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.StringUtils;
+
 import controller.CreateNewAccountController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -39,43 +41,76 @@ public class CreateNewAccountView extends Application {
 		this.createNewAccountController = controller;
 	}
 
+	private void missingDetails(String error, GridPane grid) {
+		final Text actiontarget = new Text();
+		actiontarget.setFill(Color.FIREBRICK);
+		actiontarget.setText("Please enter all the fields");
+		try {
+			grid.add(actiontarget, 0, 7);
+		} catch (IllegalArgumentException e) {
+
+		}
+		System.out.println("Error in account creation: " + error);
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 
-			BorderPane root = new BorderPane();
+			// Grid and Scene
 			GridPane grid = new GridPane();
 			Text scenetitle = new Text("Welcome");
 			Scene scene = new Scene(grid, 400, 400);
-			Label userName = new Label("Create User Name:");
-			TextField userTextField = new TextField();
+			primaryStage.setScene(scene);
 
-			TextField userTextField1 = new TextField();
-			grid.add(userTextField1, 1, 2);
-			// text field for password
+			// sets title for window
+			primaryStage.setTitle("Hello to Chess Login");
+			primaryStage.show();
+			grid.setAlignment(Pos.CENTER);
+			grid.setHgap(10);
+			grid.setVgap(10);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			grid.setPadding(new Insets(25, 25, 25, 25));
+			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+			grid.add(scenetitle, 0, 0, 2, 1);
+
+			// Label and TextField for UserName
+			Label userName = new Label("Create User Name:");
+			grid.add(userName, 0, 1);
+			TextField userTextField = new TextField();
+			grid.add(userTextField, 1, 1);
+
+			// Label and Text field for password
 			Label pw = new Label("Create Password:");
 			grid.add(pw, 0, 2);
 			PasswordField pwBox = new PasswordField();
 			grid.add(pwBox, 1, 2);
 
+			// Label and TextField for Description
 			Label description = new Label("Description:");
 			grid.add(description, 0, 3);
-
 			TextField userTextField2 = new TextField();
 			grid.add(userTextField2, 1, 3);
 
+			// Label for Profile Image
 			Label image = new Label("Select Profile Image:");
 			grid.add(image, 0, 4);
+
+			// Browse Button
 			Button ProfileBtn = new Button("Browse");
-			// Add our sign in Button
 			HBox hbProfiltBtn = new HBox(10);
 			hbProfiltBtn.setAlignment(Pos.BOTTOM_RIGHT);
 			hbProfiltBtn.getChildren().add(ProfileBtn);
 			grid.add(hbProfiltBtn, 1, 4);
 
-			//
+			// Create Account Button
+			Button createAccountbtn = new Button("Create Account");
+			HBox hbBtn = new HBox(10);
+			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+			hbBtn.getChildren().add(createAccountbtn);
+			grid.add(hbBtn, 1, 6);
 
-			// FOR selecting IMAGE FILES using out browse button
+			// browse button handle
 			ProfileBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -83,29 +118,24 @@ public class CreateNewAccountView extends Application {
 					// object to aid us in the image view
 					ImageView imageView = new ImageView();
 					Image profileImage;
-					// UserProfile userProfile = new UserProfile(userName, userPwd, description,
-					// image);
 					BorderPane layout = new BorderPane();
 
-					TextArea textArea = new TextArea();
-					FileChooser fileChooser;
-					fileChooser = new FileChooser();
-
+					FileChooser fileChooser = new FileChooser();
 					fileChooser.getExtensionFilters()
 							.addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 					// get the file form the desktop
-					// set the font of the filepath
-					textArea.setFont(Font.font("SanSerif", 12));
-					textArea.setPromptText("Path of Selected File or Files");
-					textArea.setPrefSize(300, 50);
-					textArea.setEditable(false);
+					// set the font of the file path
 
-					// Maybe move outside of browse button
 					// single file selection of images
 					file = fileChooser.showOpenDialog(primaryStage);
-
+					TextArea textArea = new TextArea();
 					if (file != null) {
 						// desktop.open(file);
+						textArea.setPromptText("Path of Selected File or Files");
+						textArea.setFont(Font.font("SanSerif", 12));
+						textArea.setPrefSize(300, 50);
+						textArea.setEditable(false);
+
 						textArea.setText(file.getAbsolutePath());
 						// path, prefWidth, prefHeight, preserveRatio, smooth
 						profileImage = new Image(file.toURI().toString(), 100, 150, true, true);
@@ -116,22 +146,14 @@ public class CreateNewAccountView extends Application {
 						imageView.setPreserveRatio(true);
 						layout.setCenter(imageView);
 						BorderPane.setAlignment(imageView, Pos.TOP_LEFT);
-
 					}
-
 					grid.add(imageView, 1, 5);
 					grid.add(textArea, 1, 4);
-
 				}
 			});
 
-			Button btn = new Button("Create Account");
-
-			final Text actiontarget = new Text();
-
-			// Code to Handle an Event
-			// make the button display the text message when the user presses it.
-			btn.setOnAction(new EventHandler<ActionEvent>() {
+			// Create Account Button Handle
+			createAccountbtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent e) {
@@ -139,57 +161,39 @@ public class CreateNewAccountView extends Application {
 					String userPwd = pwBox.getText();
 					String description = userTextField2.getText();
 
-					UserProfile userProfile = new UserProfile(userName, userPwd, description, file,
-							RandomScoreGenerator.generateScore(), RandomScoreGenerator.generateWins(),
-							RandomScoreGenerator.generateLosses());
-					try {
-						CreateNewAccountView.this.createNewAccountController.createAccount(userProfile);
-						actiontarget.setFill(Color.GREEN);
-						actiontarget.setText("New Account Created");
-					} catch (SQLException | FileNotFoundException | NullPointerException e1) {
-						actiontarget.setFill(Color.FIREBRICK);
-						actiontarget.setText("Please enter all the fields");
-						System.out.println("Error in account creation: " + e1.getMessage());
-					}
+					if (StringUtils.isNullOrEmpty(userPwd) || StringUtils.isNullOrEmpty(userPwd)
+							|| StringUtils.isNullOrEmpty(userPwd) || file == null) {
+						missingDetails("Missing info", grid);
+					} else {
+						UserProfile userProfile = new UserProfile(userName, userPwd, description, file,
+								RandomScoreGenerator.generateScore(), RandomScoreGenerator.generateWins(),
+								RandomScoreGenerator.generateLosses());
 
-					// Text control for displaying the message
-					grid.add(actiontarget, 1, 7);
+						try {
+							if (CreateNewAccountView.this.createNewAccountController.doesUserExist(userProfile)) {
+								final Text actiontarget1 = new Text();
+								actiontarget1.setFill(Color.FIREBRICK);
+								actiontarget1.setText("Account Already exists");
+								grid.add(actiontarget1, 1, 7);
+							} else {
+								CreateNewAccountView.this.createNewAccountController.createAccount(userProfile);
+								final Text actiontarget1 = new Text();
+								actiontarget1.setFill(Color.GREEN);
+								actiontarget1.setText("New Account Created");
+								grid.add(actiontarget1, 1, 7);
+							}
+						} catch (SQLException | FileNotFoundException | NullPointerException
+								| IllegalArgumentException e1) {
+							missingDetails(e1.getMessage(), grid);
+						}
+
+					}
 				}
+
 			});
 
-			// sets the position of our objects to center
-			grid.setAlignment(Pos.CENTER);
-			grid.setHgap(10);
-			grid.setVgap(10);
-
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			grid.setPadding(new Insets(25, 25, 25, 25));
-
-			// Add Text, Labels, and Text Fields
-			// set our scene title it will appear in the center of our box
-			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-			grid.add(scenetitle, 0, 0, 2, 1);
-
-			// text field name and enterance area for username
-			grid.add(userName, 0, 1);
-
-			grid.add(userTextField, 1, 1);
-
-			// Add our sign in Button
-			HBox hbBtn = new HBox(10);
-			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-			hbBtn.getChildren().add(btn);
-			grid.add(hbBtn, 1, 6);
-
-			primaryStage.setScene(scene);
-			// sets our title for our window
-			primaryStage.setTitle("Hello to Chess Login");
-			primaryStage.show();
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Create Account view crashed " + e.getMessage());
 		}
-
 	}
-
 }

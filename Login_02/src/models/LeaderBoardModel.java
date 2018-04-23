@@ -51,7 +51,7 @@ public class LeaderBoardModel {
 
 	private final static int SCORE_INDEX = 3;
 
-	public List<UserPartialInfo> listSortedUsers() throws SQLException, IOException {
+	public List<UserPartialInfo> listSortedUsers() throws SQLException {
 		Connection connect = null;
 
 		try {
@@ -59,7 +59,7 @@ public class LeaderBoardModel {
 			System.out.println("Fetching records from the table for LeaderBoard...");
 			connect = DBConnect.connect();
 			Statement stmt = connect.createStatement();
-			String sql = "select userId, username, score from leaderboard_tab order by score desc";
+			String sql = "select userId, username, score from leaderboard_tab1 order by score desc";
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			return processResult(rs);
