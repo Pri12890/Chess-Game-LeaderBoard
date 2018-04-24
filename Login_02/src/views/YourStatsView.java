@@ -13,6 +13,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This class has the responsibility to create a view for the user where they
+ * can view their score, their wins and losses.
+ */
 public class YourStatsView extends Application {
 
 	final UserInfofromDb userInfofromDb1;

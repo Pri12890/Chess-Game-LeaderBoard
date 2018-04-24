@@ -33,6 +33,9 @@ import javafx.stage.Stage;
 import models.RandomScoreGenerator;
 import models.UserProfile;
 
+/**
+ * This class has the responsibility to create a view for new account creation.
+ */
 public class CreateNewAccountView extends Application {
 	public CreateNewAccountController createNewAccountController;
 	public File file;

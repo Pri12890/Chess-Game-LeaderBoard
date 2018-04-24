@@ -32,7 +32,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import models.UpdatedUserProfile;
 
-//Allows the user to update their profile
+/**
+ * This class create an update view and allows the user to update their profile
+ */
 public class UpdateProfileView extends Application {
 
 	File file;

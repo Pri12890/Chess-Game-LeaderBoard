@@ -5,6 +5,10 @@ import models.PlayerCardModel;
 import views.PlayerCardView;
 import views.YourStatsView;
 
+/**
+ * This class has the responsibility to call different Views such as - 1.
+ * YourStatsView 2. LeaderBoardView 3. DeleteProfileView 4. UpdateProfileView
+ */
 public class PlayerCardController {
 
 	private final DeleteProfileController deleteProfileController;

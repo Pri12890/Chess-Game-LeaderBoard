@@ -15,6 +15,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.LeaderBoardModel.UserPartialInfo;
 
+/**
+ * This class has the responsibility to create a leader board view for the user
+ * so that they can view all the user names and scores.
+ */
 public class LeaderBoardView extends Application {
 
 	List<UserPartialInfo> listSortedUsers;

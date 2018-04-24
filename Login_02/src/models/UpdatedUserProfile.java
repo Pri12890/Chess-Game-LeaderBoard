@@ -2,6 +2,9 @@ package models;
 
 import java.io.File;
 
+/**
+ * This class has the responsibility to store data for update into database.
+ */
 public class UpdatedUserProfile {
 	final String desc;
 	final File file;

@@ -1,6 +1,5 @@
 package models;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//pull the statistics from the leader board table,
-// statistics are the user names and highest scores
+/**
+ * This class pulls the statistics from the leader board table and displays the
+ * all the scores from database table into the Leader Board in descending order.
+ */
 public class LeaderBoardModel {
 
 	public static class UserPartialInfo {

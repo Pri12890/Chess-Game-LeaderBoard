@@ -9,6 +9,10 @@ import models.LeaderBoardModel;
 import models.LeaderBoardModel.UserPartialInfo;
 import views.LeaderBoardView;
 
+/**
+ * This class is responsible for listing all users sorted by their scores and
+ * then spins a LeaderBoardView for showing the results.
+ */
 public class LeaderBoardController {
 
 	final LeaderBoardModel leaderBoardModel;

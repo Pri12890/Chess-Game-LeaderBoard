@@ -6,6 +6,10 @@ import javafx.stage.Stage;
 import models.DeleteProfileModel;
 import views.AlertView;
 
+/**
+ * This class has the responsibility of deleting an account. Additionally, it
+ * also presents an AlertView to the user to confirm deletion.
+ */
 public class DeleteProfileController {
 	private final AlertView alertView;
 	private final DeleteProfileModel deleteProfileModel;

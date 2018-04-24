@@ -14,6 +14,10 @@ import views.LeaderBoardView;
 import views.LoginView;
 import views.UpdateProfileView;
 
+/**
+ * This class is the Main Controller which creates all the required controllers
+ * to start the Leader Board Application and drives the application.
+ */
 public class MainController {
 
 	public static void main(String[] args) {

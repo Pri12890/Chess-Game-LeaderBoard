@@ -20,6 +20,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This class has the responsibility to create a view where user can see their
+ * profile. This class also provides buttons for the user to perform other
+ * actions such as - 1. View user statistics 2. View Leader board 3. Update
+ * Profile 4. Delete Profile
+ */
 public class PlayerCardView extends Application {
 	PlayerCardController pcc;
 

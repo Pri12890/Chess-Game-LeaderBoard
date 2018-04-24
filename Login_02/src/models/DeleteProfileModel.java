@@ -6,6 +6,10 @@ import java.sql.Statement;
 
 import controller.UserInfofromDb;
 
+/**
+ * This class runs the delete query to delete user record from the database.
+ *
+ */
 public class DeleteProfileModel {
 
 	public void deleteRecord(UserInfofromDb userInfofromDb) throws SQLException {

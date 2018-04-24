@@ -4,24 +4,24 @@ import java.math.BigDecimal;
 
 import javafx.scene.image.Image;
 
-public class UserInfofromDb{
+/**
+ * This class is a placeholder to pass the database information across different
+ * controllers.
+ */
+public class UserInfofromDb {
+	public final String dbDescription;
+	public final BigDecimal dbLosses;
+	public final BigDecimal dbScore;
 	public final int dbUserId;
-	public final String dbUserName; 
-	public final String dbDescription; 
-	public final Image image; 
-	public final BigDecimal dbScore; 
-	public final BigDecimal dbWins; 
-	public final BigDecimal dbLosses; 
+	public final String dbUserName;
+	public final BigDecimal dbWins;
+	public final Image image;
+
 	/*
-	 * Constructor 
+	 * Constructor
 	 */
-	public UserInfofromDb(int dbUserId,
-						  String dbUserName, 
-						  String dbDescription, 
-						  Image image, 
-						  BigDecimal dbScore,
-						  BigDecimal dbWins,
-						  BigDecimal dbLosses) {
+	public UserInfofromDb(int dbUserId, String dbUserName, String dbDescription, Image image, BigDecimal dbScore,
+			BigDecimal dbWins, BigDecimal dbLosses) {
 		this.dbUserId = dbUserId;
 		this.dbUserName = dbUserName;
 		this.dbDescription = dbDescription;
@@ -30,5 +30,5 @@ public class UserInfofromDb{
 		this.dbWins = dbWins;
 		this.dbLosses = dbLosses;
 	}
-	
+
 }

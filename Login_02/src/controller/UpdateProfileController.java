@@ -8,6 +8,10 @@ import models.UpdateProfileModel;
 import models.UpdatedUserProfile;
 import views.UpdateProfileView;
 
+/**
+ * This class has the responsibility to update the user Profile This class calls
+ * the UpdateProfileModel to complete the update Process.
+ */
 public class UpdateProfileController {
 
 	private final UpdateProfileModel updateProfileModel;

@@ -24,6 +24,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This class has the responsibility to create a view for the users where
+ * existing users can login into the leader board system and new users can
+ * create their profile.
+ */
 public class LoginView extends Application {
 
 	LoginController controller;

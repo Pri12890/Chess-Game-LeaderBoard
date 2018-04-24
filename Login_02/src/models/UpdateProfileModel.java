@@ -10,6 +10,10 @@ import com.mysql.jdbc.StringUtils;
 
 import controller.UserInfofromDb;
 
+/**
+ * This class has the responsibility to Update the user records by running and
+ * update query on the database
+ */
 public class UpdateProfileModel {
 
 	public void updateRecord(UserInfofromDb userInfofromDb, UpdatedUserProfile updatedUserProfile)

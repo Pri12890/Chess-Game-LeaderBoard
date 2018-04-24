@@ -10,6 +10,11 @@ import models.NewAccountModel;
 import models.UserProfile;
 import views.CreateNewAccountView;
 
+/**
+ * This class has the responsibility of creating new accounts. Additionally, it
+ * also validates that account doesn't exist before creating new accounts.
+ *
+ */
 public class CreateNewAccountController {
 
 	private final CreateNewAccountView createNewAccountView;

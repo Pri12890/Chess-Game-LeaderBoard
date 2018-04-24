@@ -18,6 +18,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * This class has the responsibility to alert the user for account deletion.
+ */
 public class AlertView {
 	public DeleteProfileController deleteProfileController;
 	// PlayerCardView playerCardView = new PlayerCardView();

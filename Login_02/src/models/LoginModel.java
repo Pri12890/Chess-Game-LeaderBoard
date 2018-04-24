@@ -14,6 +14,11 @@ import java.sql.Statement;
 import controller.UserInfofromDb;
 import javafx.scene.image.Image;
 
+/**
+ * This class the responsibility to run a select query in the database table for
+ * the user name and password. It also populates the UserInfofromDb class with
+ * the user details.
+ */
 public class LoginModel {
 
 	private final static int DESC_INDEX = 4;
@@ -37,8 +42,6 @@ public class LoginModel {
 		return image;
 	}
 
-	// checks if username and password are stored in the database ****
-	// if not prompts them to create a account
 	public UserInfofromDb login(String userName, String password) throws SQLException {
 		Connection connect = null;
 
@@ -62,13 +65,9 @@ public class LoginModel {
 
 	public UserInfofromDb processResult(final ResultSet rs) throws SQLException {
 
-		// ResultSetMetaData metaData = rs.getMetaData();// column headers
-		// int columns = metaData.getColumnCount(); // column count
 		int id = (int) rs.getObject(ID_INDEX);
 		String name = (String) rs.getObject(NAME_INDEX);
 		String desc = (String) rs.getObject(DESC_INDEX);
-
-		// Image image = rs.getObject(IMAGE_INDEX);
 
 		BigDecimal score = (BigDecimal) rs.getObject(SCORE_INDEX);
 		BigDecimal wins = (BigDecimal) rs.getObject(WINS_INDEX);

@@ -2,6 +2,10 @@ package models;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * This class has the responsibility to create random scores, wins and losses
+ * for the users
+ */
 public class RandomScoreGenerator {
 	// This class generates random Scores, Wins, Losses for the new accounts.
 	private static ThreadLocalRandom random = ThreadLocalRandom.current();

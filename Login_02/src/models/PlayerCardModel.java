@@ -5,6 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * This class has the responsibility to fetch the records from the database if
+ * the user name and password match the data existing in the database, by
+ * running a select where query.
+ */
 public class PlayerCardModel {
 	// checks if username and password are stored in the database ****
 	// if not prompts them to create a account

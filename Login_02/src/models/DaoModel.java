@@ -2,8 +2,12 @@ package models;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-//import records.BankRecords;
 
+//import records.BankRecords;
+/**
+ * This class has the responsibility to create the table if the table does not
+ * exist, using the Create query.
+ */
 public class DaoModel {
 	// Declare DB objects
 	DBConnect conn = null;
@@ -52,19 +56,19 @@ public class DaoModel {
 	 * "VALUES (' "+robjs[i].getId()+"', ' "+robjs[i].getIncome()+"  ', ' "+robjs[i]
 	 * .getPep()+" ' )"; //test connection and output //System.out.println("Pep " +
 	 * robjs[i].getPep());
-	 * 
+	 *
 	 * stmt.executeUpdate(sql); } conn.connect().close(); } catch (SQLException se)
 	 * { se.printStackTrace(); }
-	 * 
+	 *
 	 * }
 	 */
 
 	/*
 	 * public ResultSet retrieveRecords() throws SQLException {
-	 * 
+	 *
 	 * ResultSet rs = null; stmt = conn.connect().createStatement(); String sql =
 	 * "select pid, id,income, pep from a_dama_tab order by pep desc";
-	 * 
+	 *
 	 * rs = stmt.executeQuery(sql); conn.connect().close(); return rs; }
 	 */
 }

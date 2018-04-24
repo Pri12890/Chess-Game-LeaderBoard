@@ -2,6 +2,10 @@ package models;
 
 import java.io.File;
 
+/**
+ * This class has the responsibility to take information from user in order to
+ * create an account.
+ */
 public class UserProfile {
 
 	final String desc;

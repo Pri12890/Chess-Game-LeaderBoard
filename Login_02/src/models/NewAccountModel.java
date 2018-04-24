@@ -6,6 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * This class has the responsibility to create a new account by running an
+ * insert query.
+ */
 public class NewAccountModel {
 	/** This class generates random score, wins, losses for new user */
 	final RandomScoreGenerator rs;
@@ -26,11 +30,9 @@ public class NewAccountModel {
 					+ "VALUES (?,?,?,?,?,?,?)";
 
 			PreparedStatement preparedStmt = connect.prepareStatement(sql);
-			// inserting all user data (name, pwd, desc, image) into database table
 			preparedStmt.setString(1, userProfile.getName());
 			preparedStmt.setString(2, userProfile.getPwd());
 			preparedStmt.setString(3, userProfile.getDesc());
-			// TODO : PA - if setObject works for image
 			int length = (int) userProfile.getFile().length();
 			preparedStmt.setBinaryStream(4, new FileInputStream(userProfile.getFile()), length);
 			preparedStmt.setLong(5, userProfile.getScore());

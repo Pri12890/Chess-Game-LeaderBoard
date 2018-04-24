@@ -5,6 +5,12 @@ import java.sql.SQLException;
 import models.LoginModel;
 import views.PlayerCardView;
 
+/**
+ * This class has the responsibility of doing login authentication for user.
+ * Additionally, it can also talk to CreateNewAccountController and
+ * PlayerCardController for creating their respective views.
+ *
+ */
 public class LoginController {
 	private final CreateNewAccountController createNewAccountController;
 	private final LoginModel loginModel;
