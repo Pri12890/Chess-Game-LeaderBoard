@@ -7,11 +7,8 @@ import models.DaoModel;
  */
 public class TableCreation {
 
-	public static void main(String[] args) {
-
+	public static void createTable() {
 		DaoModel dao = new DaoModel();
 		dao.createTable();
-
 	}
-
 }

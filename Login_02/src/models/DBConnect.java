@@ -16,14 +16,6 @@ public class DBConnect {
 	static final String USER = "db510", PASS = "510";
 
 	public static Connection connect() throws SQLException {
-
 		return DriverManager.getConnection(DB_URL, USER, PASS);
-
 	}
-
-	public static void main(String[] args) throws SQLException {
-
-		connect();
-	}
-
 }
